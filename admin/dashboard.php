@@ -726,8 +726,8 @@ $users = $listStmt->get_result();
 </select>
 
 <div class="form-group batch-field" id="batch_field">
-    <label for="batch" style="font-size:12px; color:var(--gray-500); font-weight:700; margin-bottom:-2px;">Batch</label>
-    <input id="batch" type="text" name="batch" placeholder="e.g. 2024">
+    <label for="batch" style="font-size:12px; color:var(--gray-500); font-weight:700; margin-bottom: 5px;">Batch</label>
+    <input id="batch" type="text" name="batch" placeholder="Enter Your batch number">
 </div>
 
 <button type="submit" class="primary-button">
