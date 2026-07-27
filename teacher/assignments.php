@@ -71,11 +71,11 @@ $assignments = $mysqli->query("SELECT a.*, d.name as dept, (SELECT COUNT(*) FROM
           <div class="form-row">
             <div class="form-group">
               <label>Title *</label>
-              <input name="title" placeholder="Assignment title" required>
+              <input name="title" placeholder="Enter title" required>
             </div>
             <div class="form-group">
               <label>Course Name *</label>
-              <input name="course_name" placeholder="e.g. CSE301" required>
+              <input name="course_name" placeholder="Enter course name" required>
             </div>
           </div>
           <div class="form-row">
@@ -90,13 +90,13 @@ $assignments = $mysqli->query("SELECT a.*, d.name as dept, (SELECT COUNT(*) FROM
             </div>
             <div class="form-group">
               <label>Semester *</label>
-              <input name="semester" placeholder="e.g. 3rd Semester" required>
+              <input name="semester" placeholder="Enter semester" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Batch *</label>
-              <input name="batch" placeholder="e.g. 2024" required>
+              <input name="batch" placeholder="Enter batch number" required>
             </div>
             <div class="form-group">
               <label>Description</label>

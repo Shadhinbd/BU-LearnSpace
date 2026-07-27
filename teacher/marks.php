@@ -206,11 +206,11 @@ if ($selected_assessment > 0) {
           <div class="form-row">
             <div class="form-group">
               <label>Assessment Title *</label>
-              <input name="title" placeholder="e.g. Mid Term Exam" required>
+              <input name="title" placeholder="Enter title" required>
             </div>
             <div class="form-group">
               <label>Course Name *</label>
-              <input name="course_name" placeholder="e.g. CSE301" required>
+              <input name="course_name" placeholder="Enter course_name" required>
             </div>
           </div>
           <div class="form-row">
@@ -225,17 +225,17 @@ if ($selected_assessment > 0) {
             </div>
             <div class="form-group">
               <label>Semester *</label>
-              <input name="semester" placeholder="e.g. 3rd Semester" required>
+              <input name="semester" placeholder="Enter semester" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Course Code *</label>
-              <input name="course_code" placeholder="e.g. CSE301" required>
+              <input name="course_code" placeholder="Enter course code" required>
             </div>
             <div class="form-group">
               <label>Batch *</label>
-              <input name="batch" placeholder="e.g. 2024" required>
+              <input name="batch" placeholder="Enter batch number" required>
             </div>
           </div>
           <div class="form-group" style="max-width:220px">

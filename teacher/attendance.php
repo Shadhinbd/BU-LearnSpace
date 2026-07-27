@@ -129,7 +129,7 @@ $history = $mysqli->query("SELECT a.*, d.name as dept, (SELECT COUNT(*) FROM att
           </div>
           <div class="form-group" style="margin:0;min-width:150px">
             <label>Batch</label>
-            <input type="text" name="batch" value="<?= htmlspecialchars($selected_batch) ?>" placeholder="e.g. 2024">
+            <input type="text" name="batch" value="<?= htmlspecialchars($selected_batch) ?>" placeholder="Enter batch number">
           </div>
           <div class="form-group" style="margin:0;min-width:180px">
             <label>Date</label>
@@ -151,11 +151,11 @@ $history = $mysqli->query("SELECT a.*, d.name as dept, (SELECT COUNT(*) FROM att
           <div class="form-row">
             <div class="form-group">
               <label>Course Name *</label>
-              <input name="course_name" placeholder="e.g. CSE301" required>
+              <input name="course_name" placeholder="Enter course name" required>
             </div>
             <div class="form-group">
               <label>Semester *</label>
-              <input name="semester" placeholder="e.g. 3rd Semester" required>
+              <input name="semester" placeholder="Enter semester" required>
             </div>
           </div>
           <div class="form-row">
