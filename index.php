@@ -62,7 +62,7 @@ body {
 
 .site-subtitle {
     font-size: 15px;
-    color: #94a3b8;
+    color: #d3d9e2;
     margin-top: 2px;
 }
 
@@ -182,7 +182,7 @@ body {
 .site-footer {
     text-align: center;
     padding: 16px;
-    color: #64748b;
+    color: #d3d9e2;
     font-size: 13px;
     background: #101828;
     border-top: 1px solid #263449;

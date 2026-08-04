@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['do_reset'])) {
   <form method="post">
     <input type="hidden" name="request_reset" value="1">
     <label>Email Address</label>
-    <input type="email" name="email" placeholder="student@bu.com" required autofocus>
+    <input type="email" name="email" placeholder="student@gmail.com" required autofocus>
     <button type="submit">Send Reset Link</button>
   </form>
   <a href="login.php" class="back">← Back to Login</a>

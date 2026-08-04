@@ -336,7 +336,7 @@ $depts = $mysqli->query('SELECT * FROM departments');
             <label>Material File <?= $edit_material ? '(Leave blank to keep current)' : '' ?></label>
             <input type="file" name="file" <?= $edit_material ? '' : 'required' ?> accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp">
             <small style="color:#94a3b8;display:block;margin-top:6px;">
-              Supported: PDF, Word, PowerPoint, Excel, or image files. A cover thumbnail is generated automatically — no need to upload one.
+              Supported: PDF, Word, PowerPoint, Excel, or image files.
             </small>
           </div>
 
