@@ -21,9 +21,16 @@ $late = $mysqli->query($att_base_query . " AND ar.status='late'")->fetch_assoc()
 $absent = $total - $present - $late;
 $pct = $total > 0 ? round(($present/$total)*100) : 0;
 
+// Pagination for attendance records
+$page = max(1, intval($_GET['page'] ?? 1));
+$per_page = 10;
+$offset = ($page - 1) * $per_page;
+$pages = $total > 0 ? (int)ceil($total / $per_page) : 1;
+
 $records_query = "SELECT a.class_date, a.course_name, a.semester, ar.status FROM attendance_records ar JOIN attendance a ON ar.attendance_id=a.id WHERE ar.student_id=$sid AND a.department_id=$dept_id";
 if ($batch !== '') { $records_query .= " AND a.batch='$batch'"; }
 $records_query .= " ORDER BY a.class_date DESC";
+$records_query .= " LIMIT $offset, $per_page";
 $records = $mysqli->query($records_query);
 ?>
 <!DOCTYPE html>
@@ -41,6 +48,14 @@ $records = $mysqli->query($records_query);
       <div>
         <h1>My Attendance</h1>
         <p>Track your class attendance record</p>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 8px 0 0">
+        <?php if ($page > 1): ?>
+          <a class="btn btn-ghost" href="attendance.php?page=<?= $page-1 ?>">&laquo; Previous</a>
+        <?php endif; ?>
+        <?php if ($page < $pages): ?>
+          <a class="btn btn-primary" href="attendance.php?page=<?= $page+1 ?>">Next &raquo;</a>
+        <?php endif; ?>
       </div>
     </div>
 

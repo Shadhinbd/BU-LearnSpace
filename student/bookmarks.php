@@ -18,6 +18,17 @@ if ($student_id <= 0) {
     exit;
 }
 
+// Pagination
+$page = max(1, intval($_GET['page'] ?? 1));
+$per_page = 10;
+$offset = ($page - 1) * $per_page;
+
+// total bookmarks for this student
+$countStmt = $mysqli->prepare('SELECT COUNT(*) AS c FROM material_bookmarks WHERE student_id = ?');
+$countStmt->bind_param('i', $student_id);
+$countStmt->execute();
+$total = (int)$countStmt->get_result()->fetch_assoc()['c'];
+$pages = $total > 0 ? (int)ceil($total / $per_page) : 1;
 function material_label($filename) {
     $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
@@ -37,8 +48,8 @@ if ($delete_id > 0) {
     exit;
 }
 
-$materials = $mysqli->prepare('SELECT m.id, m.title, m.filename, m.cover_image, m.course_name, m.semester, m.department_id, m.uploaded_by, m.view_count, m.download_count, m.created_at, u.name AS teacher, IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating, COUNT(r.id) AS ratings_count, MAX(b.created_at) AS bookmarked_at FROM materials m INNER JOIN material_bookmarks b ON b.material_id = m.id LEFT JOIN users u ON m.uploaded_by = u.id LEFT JOIN material_ratings r ON r.material_id = m.id WHERE b.student_id = ? GROUP BY m.id ORDER BY bookmarked_at DESC');
-$materials->bind_param('i', $student_id);
+$materials = $mysqli->prepare('SELECT m.id, m.title, m.filename, m.cover_image, m.course_name, m.semester, m.department_id, m.uploaded_by, m.view_count, m.download_count, m.created_at, u.name AS teacher, IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating, COUNT(r.id) AS ratings_count, MAX(b.created_at) AS bookmarked_at FROM materials m INNER JOIN material_bookmarks b ON b.material_id = m.id LEFT JOIN users u ON m.uploaded_by = u.id LEFT JOIN material_ratings r ON r.material_id = m.id WHERE b.student_id = ? GROUP BY m.id ORDER BY bookmarked_at DESC LIMIT ? OFFSET ?');
+$materials->bind_param('iii', $student_id, $per_page, $offset);
 $materials->execute();
 $res = $materials->get_result();
 
@@ -116,6 +127,14 @@ if (isset($_GET['removed'])) {
             <?php endwhile; endif; ?>
           </tbody>
         </table>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 8px 0 0">
+        <?php if ($page > 1): ?>
+          <a class="btn btn-ghost" href="bookmarks.php?page=<?= $page-1 ?>">&laquo; Previous</a>
+        <?php endif; ?>
+        <?php if ($page < $pages): ?>
+          <a class="btn btn-primary" href="bookmarks.php?page=<?= $page+1 ?>">Next &raquo;</a>
+        <?php endif; ?>
       </div>
     </div>
   </main>

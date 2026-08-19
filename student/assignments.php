@@ -15,6 +15,17 @@ $batch = trim($stu['batch'] ?? '');
 $msg = '';
 $msg_type = 'success';
 
+// Pagination
+$page = max(1, intval($_GET['page'] ?? 1));
+$per_page = 10;
+$offset = ($page - 1) * $per_page;
+
+// total assignments count
+$count_q = "SELECT COUNT(*) AS c FROM assignments a WHERE a.department_id=$dept_id";
+if ($batch !== '') { $count_q .= " AND a.batch='$batch'"; }
+$total = (int)$mysqli->query($count_q)->fetch_assoc()['c'];
+$pages = $total > 0 ? (int)ceil($total / $per_page) : 1;
+
 $uploadsAbsDir = __DIR__ . '/../uploads';
 if (!is_dir($uploadsAbsDir)) {
     @mkdir($uploadsAbsDir, 0775, true);
@@ -56,6 +67,7 @@ if ($batch !== '') {
     $assignments_query .= " AND a.batch='$batch'";
 }
 $assignments_query .= " ORDER BY a.deadline ASC";
+$assignments_query .= " LIMIT $offset, $per_page";
 $assignments = $mysqli->query($assignments_query);
 ?>
 <!DOCTYPE html>
@@ -73,6 +85,14 @@ $assignments = $mysqli->query($assignments_query);
       <div>
         <h1>Assignments</h1>
         <p>View and submit your assignments</p>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 8px 0 0">
+        <?php if ($page > 1): ?>
+          <a class="btn btn-ghost" href="assignments.php?page=<?= $page-1 ?>">&laquo; Previous</a>
+        <?php endif; ?>
+        <?php if ($page < $pages): ?>
+          <a class="btn btn-primary" href="assignments.php?page=<?= $page+1 ?>">Next &raquo;</a>
+        <?php endif; ?>
       </div>
     </div>
 

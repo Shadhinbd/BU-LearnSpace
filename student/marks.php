@@ -17,9 +17,21 @@ $sid = (int)$stu['id'];
 $dept_id = (int)($stu['department_id'] ?? 0);
 $batch = trim($stu['batch'] ?? '');
 
+// Pagination
+$page = max(1, intval($_GET['page'] ?? 1));
+$per_page = 10;
+$offset = ($page - 1) * $per_page;
+
+// total assessments count
+$count_q = "SELECT COUNT(*) AS c FROM assessments a WHERE a.department_id=$dept_id";
+if ($batch !== '') { $count_q .= " AND a.batch='$batch'"; }
+$total = (int)$mysqli->query($count_q)->fetch_assoc()['c'];
+$pages = $total > 0 ? (int)ceil($total / $per_page) : 1;
+
 $assessment_query = "SELECT a.*, am.obtained_marks, am.remarks, am.class_test, am.attendance_mark, am.viva, am.lab, am.presentation, am.mid, am.final, am.others_mark FROM assessments a LEFT JOIN assessment_marks am ON a.id=am.assessment_id AND am.student_id=$sid WHERE a.department_id=$dept_id";
 if ($batch !== '') { $assessment_query .= " AND a.batch='$batch'"; }
 $assessment_query .= " ORDER BY a.created_at DESC";
+$assessment_query .= " LIMIT $offset, $per_page";
 $assessments = $mysqli->query($assessment_query);
 ?>
 <!DOCTYPE html>
@@ -37,6 +49,14 @@ $assessments = $mysqli->query($assessment_query);
       <div>
         <h1>My Assessment Marks</h1>
         <p>View your marks for all assessments</p>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 8px 0 0">
+        <?php if ($page > 1): ?>
+          <a class="btn btn-ghost" href="marks.php?page=<?= $page-1 ?>">&laquo; Previous</a>
+        <?php endif; ?>
+        <?php if ($page < $pages): ?>
+          <a class="btn btn-primary" href="marks.php?page=<?= $page+1 ?>">Next &raquo;</a>
+        <?php endif; ?>
       </div>
     </div>
 
