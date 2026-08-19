@@ -17,7 +17,8 @@ $msg_type = 'success';
 
 // Pagination
 $page = max(1, intval($_GET['page'] ?? 1));
-$per_page = 10;
+$per_page = (int)($_GET['limit'] ?? 10);
+if (!in_array($per_page, [10,20,50], true)) { $per_page = 10; }
 $offset = ($page - 1) * $per_page;
 
 // total assignments count
@@ -86,14 +87,7 @@ $assignments = $mysqli->query($assignments_query);
         <h1>Assignments</h1>
         <p>View and submit your assignments</p>
       </div>
-      <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 8px 0 0">
-        <?php if ($page > 1): ?>
-          <a class="btn btn-ghost" href="assignments.php?page=<?= $page-1 ?>">&laquo; Previous</a>
-        <?php endif; ?>
-        <?php if ($page < $pages): ?>
-          <a class="btn btn-primary" href="assignments.php?page=<?= $page+1 ?>">Next &raquo;</a>
-        <?php endif; ?>
-      </div>
+      <!-- per-page selector removed from header; moved into All Assignments panel header below -->
     </div>
 
     <?php if ($msg): ?>
@@ -122,11 +116,27 @@ $assignments = $mysqli->query($assignments_query);
           <a href="assignments.php" class="btn btn-ghost" style="margin-left:8px">Cancel</a>
         </form>
       </div>
+
     </div>
     <?php endif; endif; ?>
 
     <div class="panel">
-      <div class="panel-header"><h3>All Assignments</h3></div>
+      <div class="panel-header" style="display:flex;align-items:center;gap:12px;">
+        <h3>All Assignments</h3>
+        <div style="margin-left:auto">
+          <form method="get" style="display:flex;align-items:center;gap:8px">
+            <?php foreach ($_GET as $k => $v): if ($k === 'limit') continue; ?>
+              <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
+            <?php endforeach; ?>
+            <label style="font-size:13px;color:#9ca3af;margin:0">Per page</label>
+            <select name="limit" onchange="this.form.submit()" style="padding:6px 8px;border-radius:6px;background:#0f1724;color:#fff;border:1px solid rgba(255,255,255,0.06)">
+              <option value="10" <?= (int)($_GET['limit'] ?? 10) === 10 ? 'selected' : '' ?>>10</option>
+              <option value="20" <?= (int)($_GET['limit'] ?? 10) === 20 ? 'selected' : '' ?>>20</option>
+              <option value="50" <?= (int)($_GET['limit'] ?? 10) === 50 ? 'selected' : '' ?>>50</option>
+            </select>
+          </form>
+        </div>
+      </div>
       <div class="table-wrap">
         <table>
           <thead>
@@ -169,7 +179,35 @@ $assignments = $mysqli->query($assignments_query);
           </tbody>
         </table>
       </div>
-    </div>
+      <?php if ($total > 0):
+        $prev_page = max(1, $page - 1);
+        $next_page = min($pages, $page + 1);
+        $prev_params = $_GET;
+        $next_params = $_GET;
+        $prev_params['page'] = $prev_page;
+        $next_params['page'] = $next_page;
+        $prev_query = http_build_query($prev_params);
+        $next_query = http_build_query($next_params);
+        $is_first_page = $page === 1;
+        $is_last_page = $page === $pages;
+      ?>
+      <div class="pagination-wrap">
+        <?php if ($is_first_page): ?>
+          <span class="ghost-button disabled" aria-disabled="true">Previous</span>
+        <?php else: ?>
+          <a class="ghost-button" href="assignments.php?<?= $prev_query ?>">Previous</a>
+        <?php endif; ?>
+
+        <span class="page-chip">Page <?= (int)$page ?> of <?= (int)$pages ?></span>
+
+        <?php if ($is_last_page): ?>
+          <span class="ghost-button disabled" aria-disabled="true">Next</span>
+        <?php else: ?>
+          <a class="ghost-button" href="assignments.php?<?= $next_query ?>">Next</a>
+        <?php endif; ?>
+      </div>
+      <?php endif; ?>
+      </div>
   </main>
 </div>
 </body>

@@ -49,14 +49,7 @@ $records = $mysqli->query($records_query);
         <h1>My Attendance</h1>
         <p>Track your class attendance record</p>
       </div>
-      <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 8px 0 0">
-        <?php if ($page > 1): ?>
-          <a class="btn btn-ghost" href="attendance.php?page=<?= $page-1 ?>">&laquo; Previous</a>
-        <?php endif; ?>
-        <?php if ($page < $pages): ?>
-          <a class="btn btn-primary" href="attendance.php?page=<?= $page+1 ?>">Next &raquo;</a>
-        <?php endif; ?>
-      </div>
+      <!-- pagination moved below table to match view.php style -->
     </div>
 
     <?php if ($pct < 75 && $total > 0): ?>
@@ -107,7 +100,35 @@ $records = $mysqli->query($records_query);
           </tbody>
         </table>
       </div>
-    </div>
+        <?php if ($total > 0):
+          $prev_page = max(1, $page - 1);
+          $next_page = min($pages, $page + 1);
+          $prev_params = $_GET;
+          $next_params = $_GET;
+          $prev_params['page'] = $prev_page;
+          $next_params['page'] = $next_page;
+          $prev_query = http_build_query($prev_params);
+          $next_query = http_build_query($next_params);
+          $is_first_page = $page === 1;
+          $is_last_page = $page === $pages;
+        ?>
+        <div class="pagination-wrap">
+          <?php if ($is_first_page): ?>
+            <span class="ghost-button disabled" aria-disabled="true">Previous</span>
+          <?php else: ?>
+            <a class="ghost-button" href="attendance.php?<?= $prev_query ?>">Previous</a>
+          <?php endif; ?>
+
+          <span class="page-chip">Page <?= (int)$page ?> of <?= (int)$pages ?></span>
+
+          <?php if ($is_last_page): ?>
+            <span class="ghost-button disabled" aria-disabled="true">Next</span>
+          <?php else: ?>
+            <a class="ghost-button" href="attendance.php?<?= $next_query ?>">Next</a>
+          <?php endif; ?>
+        </div>
+        <?php endif; ?>
+      </div>
   </main>
 </div>
 </body>

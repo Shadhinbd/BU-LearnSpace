@@ -128,14 +128,34 @@ if (isset($_GET['removed'])) {
           </tbody>
         </table>
       </div>
-      <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 8px 0 0">
-        <?php if ($page > 1): ?>
-          <a class="btn btn-ghost" href="bookmarks.php?page=<?= $page-1 ?>">&laquo; Previous</a>
+      <?php if ($total > 0):
+        $prev_page = max(1, $page - 1);
+        $next_page = min($pages, $page + 1);
+        $prev_params = $_GET;
+        $next_params = $_GET;
+        $prev_params['page'] = $prev_page;
+        $next_params['page'] = $next_page;
+        $prev_query = http_build_query($prev_params);
+        $next_query = http_build_query($next_params);
+        $is_first_page = $page === 1;
+        $is_last_page = $page === $pages;
+      ?>
+      <div class="pagination-wrap">
+        <?php if ($is_first_page): ?>
+          <span class="ghost-button disabled" aria-disabled="true">Previous</span>
+        <?php else: ?>
+          <a class="ghost-button" href="bookmarks.php?<?= $prev_query ?>">Previous</a>
         <?php endif; ?>
-        <?php if ($page < $pages): ?>
-          <a class="btn btn-primary" href="bookmarks.php?page=<?= $page+1 ?>">Next &raquo;</a>
+
+        <span class="page-chip">Page <?= (int)$page ?> of <?= (int)$pages ?></span>
+
+        <?php if ($is_last_page): ?>
+          <span class="ghost-button disabled" aria-disabled="true">Next</span>
+        <?php else: ?>
+          <a class="ghost-button" href="bookmarks.php?<?= $next_query ?>">Next</a>
         <?php endif; ?>
       </div>
+      <?php endif; ?>
     </div>
   </main>
 </div>
