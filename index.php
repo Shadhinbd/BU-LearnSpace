@@ -30,40 +30,67 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 22px 24px;
-    background: #141d2f;
-    border-bottom: 1px solid #263449;
+    min-height: 116px;
+    padding: 12px 24px;
+    position: relative;
+    background:
+        radial-gradient(ellipse at 50% -70%, rgba(59, 130, 246, 0.32), transparent 70%),
+        linear-gradient(110deg, #101a2d 0%, #1a2944 50%, #101a2d 100%);
+    border-bottom: 1px solid rgba(147, 197, 253, 0.24);
+    box-shadow: 0 12px 32px rgba(3, 8, 20, 0.3), inset 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.site-header::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #38bdf8 30%, #3b82f6 70%, transparent);
+    opacity: 0.8;
+}
+
+.site-heading-text {
+    line-height: 1.2;
+    width: 100%;
+    text-align: center;
 }
 
 .site-title-row {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .site-logo {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
     object-fit: cover;
     flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.35);
 }
 
-.site-heading-text { line-height: 1.2; }
-
 .site-title {
-    font-size: 35px;
-    line-height: 42px;
+    font-size: clamp(2.3rem, 4vw, 4.2rem);
+    line-height: 1;
     font-weight: 900;
-    color: #3b82f6;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.04em;
+    background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 20%, #7dd3fc 48%, #60a5fa 72%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 8px 28px rgba(59, 130, 246, 0.35);
 }
 
 .site-subtitle {
-    font-size: 15px;
-    color: #d3d9e2;
-    margin-top: 2px;
+    font-size: clamp(0.8rem, 1.6vw, 1.15rem);
+    color: rgba(226, 232, 240, 0.84);
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    text-align: center;
 }
 
 /* ---------- Split screen ---------- */
